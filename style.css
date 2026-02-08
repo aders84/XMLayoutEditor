@@ -1,0 +1,349 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===================== TOOLBAR ===================== */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  border-bottom: 1px solid #ccc;
+  background: #f5f5f5;
+}
+.toolbar .spacer {
+  flex: 1;
+}
+
+/* ===================== MAIN LAYOUT ===================== */
+.main {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ===================== VARIABLES PANEL ===================== */
+.variables {
+  width: 280px;
+  padding: 8px;
+  border-right: 1px solid #ccc;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+}
+
+#var-search {
+  margin: 6px 0;
+}
+
+#var-list {
+  flex: 1;
+  overflow: auto;
+  border: 1px solid #ccc;
+  padding: 6px;
+  list-style: none;
+  margin: 0;
+}
+
+#var-list li {
+  padding: 4px 6px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+#var-list li:hover {
+  background: #e6f0ff;
+}
+
+/* ===================== WORKSPACE ===================== */
+.workspace {
+  flex: 1;
+  background: #ddd;
+  overflow: auto;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.stage {
+  position: relative;
+}
+
+/* ===================== RULERS ===================== */
+.ruler {
+  position: absolute;
+  background: #f2f2f2;
+  border: 1px solid #bbb;
+  font-size: 10px;
+  color: #333;
+  user-select: none;
+  z-index: 5;
+}
+
+.ruler-top {
+  left: 24px;
+  top: 0;
+  height: 24px;
+  border-bottom: none;
+}
+
+.ruler-left {
+  left: 0;
+  top: 24px;
+  width: 24px;
+  border-right: none;
+}
+
+.ruler .tick {
+  position: absolute;
+  background: #666;
+  opacity: 0.9;
+}
+
+.ruler-top .tick {
+  bottom: 0;
+  width: 1px;
+}
+.ruler-left .tick {
+  right: 0;
+  height: 1px;
+}
+
+.ruler .num {
+  position: absolute;
+  font-size: 10px;
+  color: #222;
+  opacity: 0.9;
+}
+
+/* ===================== CANVAS ===================== */
+.canvas-wrap {
+  position: relative;
+  margin-left: 24px;
+  margin-top: 24px;
+}
+
+#canvas {
+  position: relative;
+  background: white;
+  border: 1px solid #888;
+  background-image:
+    linear-gradient(#eee 1px, transparent 1px),
+    linear-gradient(90deg, #eee 1px, transparent 1px);
+  background-size: 3.78px 3.78px;
+}
+
+/* ===================== SIMPLE ELEMENTS (txtOut) ===================== */
+.element {
+  position: absolute;
+  padding: 2px 4px;
+  border: 1px dashed transparent;
+  cursor: move;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.element:hover {
+  border-color: #999;
+}
+
+.element.selected {
+  border: 1px solid #e60000;
+  background: rgba(255, 0, 0, 0.08);
+}
+
+.element.locked {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.element.editing {
+  border: 1px solid #28a745;
+  background: #eaffea;
+}
+
+/* ===================== TEXT BLOCKS ===================== */
+.text-block {
+  position: absolute;
+  border: 1px dashed #c00;
+  background: rgba(255, 255, 255, 0.65);
+  padding: 2px;
+  overflow: hidden;
+  cursor: move;
+}
+
+.text-block.selected {
+  outline: 2px solid #1e90ff;
+}
+
+.text-block.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.text-block.editing {
+  border: 1px solid #28a745;
+  background: #eaffea;
+}
+
+/* líneas internas del bloque */
+.tb-line {
+  white-space: nowrap;
+}
+
+/* editor inline */
+.tb-editor {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  resize: none;
+  font: inherit;
+  background: #fff;
+}
+
+/* ===================== RESIZE HANDLES ===================== */
+.tb-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #1e90ff;
+  border: 1px solid #fff;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+.tb-e {
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: ew-resize;
+}
+
+.tb-s {
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: ns-resize;
+}
+
+.tb-se {
+  right: -6px;
+  bottom: -6px;
+  cursor: nwse-resize;
+}
+
+/* ===================== GUIDES ===================== */
+.guide {
+  position: absolute;
+  z-index: 4;
+  background: #2bb3ff;
+  opacity: 0.9;
+}
+
+.guide.h {
+  left: 0;
+  right: 0;
+  height: 1px;
+  cursor: row-resize;
+}
+
+.guide.v {
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  cursor: col-resize;
+}
+
+/* ===================== PROPERTIES ===================== */
+.properties {
+  width: 260px;
+  padding: 10px;
+  border-left: 1px solid #ccc;
+  background: #fafafa;
+}
+
+.properties label {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.properties input {
+  width: 100%;
+}
+
+.hint {
+  font-size: 11px;
+  color: #555;
+  margin-top: 10px;
+  line-height: 1.4;
+}
+
+/* ===================== PRINT PREVIEW ===================== */
+.print-preview .variables,
+.print-preview .properties {
+  display: none;
+}
+
+.print-preview .toolbar button:not(#toggle-print),
+.print-preview .toolbar input {
+  display: none;
+}
+
+.print-preview .workspace {
+  background: #fff;
+  padding: 0;
+}
+
+.print-preview #canvas {
+  border: none;
+  background-image: none;
+}
+
+/* ocultar controles visuales en impresión */
+.print-preview .element,
+.print-preview .text-block {
+  border: none !important;
+  background: transparent !important;
+}
+
+.print-preview .tb-handle,
+.print-preview .guide {
+  display: none !important;
+}
+
+.print-preview .element {
+  cursor: default;
+}
+
+.font-flags {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.font-flags label {
+  font-size: 12px;
+}
+
+.tb-editor {
+  background: #fff;
+  border: 1px solid #333;
+  padding: 4px;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  resize: none;
+  line-height: 1.4;
+  z-index: 1000;
+  position: absolute;
+}
