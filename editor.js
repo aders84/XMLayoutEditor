@@ -94,6 +94,23 @@ function getBlockById(id) {
   return textBlocks.find((b) => b.id === id) || null;
 }
 
+function getVariablesFromXml() {
+  if (!xmlDoc) return [];
+
+  const vars = new Set();
+
+  xmlDoc.querySelectorAll("txtOut").forEach((n) => {
+    const type = n.getAttribute("type");
+    const name = n.getAttribute("fieldName");
+
+    if (type !== "1" && name) {
+      vars.add(name);
+    }
+  });
+
+  return Array.from(vars).sort();
+}
+
 /* ===================== State (Undo/Redo) ===================== */
 function serializeState() {
   return JSON.stringify({
@@ -188,32 +205,23 @@ function getSelectedBlocks() {
 }
 /* ===================== Variables panel ===================== */
 function initVariablesPanel() {
-  if (!window.PRINT_VARIABLES) {
-    console.error("PRINT_VARIABLES no está definido. Revisá variables.js");
-    return;
-  }
-
+  // ya no hay grupos externos
   varGroup.innerHTML = "";
-  Object.keys(window.PRINT_VARIABLES).forEach((g) => {
-    const opt = document.createElement("option");
-    opt.value = g;
-    opt.textContent = g;
-    varGroup.appendChild(opt);
-  });
+  varGroup.disabled = true; // queda visualmente deshabilitado
 
-  varGroup.addEventListener("change", renderVarList);
   varSearch.addEventListener("input", renderVarList);
-  renderVarList();
 }
 
 function renderVarList() {
   varList.innerHTML = "";
-  const group = varGroup.value;
-  const vars = window.PRINT_VARIABLES?.[group] || [];
-  const f = (varSearch.value || "").toLowerCase();
+
+  if (!xmlDoc) return;
+
+  const filter = (varSearch.value || "").toLowerCase();
+  const vars = getVariablesFromXml();
 
   vars
-    .filter((v) => v.toLowerCase().includes(f))
+    .filter((v) => v.toLowerCase().includes(filter))
     .forEach((v) => {
       const li = document.createElement("li");
       li.textContent = v;
@@ -270,6 +278,7 @@ xmlInput.addEventListener("change", (e) => {
 
     loadLayoutSizeFromXml();
     render();
+    renderVarList(); // 🔹 refresca variables desde el XML
   };
   r.readAsText(file);
 });
