@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Editor Layout XML</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- ===================== TOOLBAR ===================== -->
+    <div class="toolbar">
+      <input type="file" id="xmlInput" accept=".xml" />
+
+      <button id="undo" disabled>Undo</button>
+      <button id="redo" disabled>Redo</button>
+
+      <button id="save">Guardar XML</button>
+
+      <button id="add-text">➕ Texto</button>
+      <button id="add-text-block">🧱 Bloque texto</button>
+
+      <button id="copy" disabled>Copiar</button>
+      <button id="paste" disabled>Pegar</button>
+
+      <button id="lock" disabled>🔒</button>
+      <button id="unlock" disabled>🔓</button>
+
+      <button id="front" disabled>⬆ Frente</button>
+      <button id="back" disabled>⬇ Fondo</button>
+
+      <span class="spacer"></span>
+
+      <button id="toggle-print">Vista impresión 1:1</button>
+    </div>
+
+    <!-- ===================== MAIN ===================== -->
+    <div class="main">
+      <!-- ========== VARIABLES ========== -->
+      <aside class="variables">
+        <h3>Variables</h3>
+
+        <select id="var-group"></select>
+
+        <input id="var-search" placeholder="Buscar..." />
+
+        <ul id="var-list"></ul>
+      </aside>
+
+      <!-- ========== WORKSPACE ========== -->
+      <section class="workspace">
+        <div class="stage">
+          <!-- RULERS -->
+          <div id="ruler-top" class="ruler ruler-top"></div>
+          <div id="ruler-left" class="ruler ruler-left"></div>
+
+          <!-- CANVAS -->
+          <div id="canvasWrap" class="canvas-wrap">
+            <div id="canvas"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== PROPERTIES ========== -->
+      <aside class="properties">
+        <!-- ===== Layout ===== -->
+        <h3>Layout</h3>
+
+        <label>Ancho (mm)</label>
+        <input id="layout-width" type="number" min="10" />
+
+        <label>Alto (mm)</label>
+        <input id="layout-height" type="number" min="10" />
+
+        <hr />
+
+        <!-- ===== Elemento ===== -->
+        <h3>Elemento</h3>
+
+        <label>X (mm)</label>
+        <input id="prop-x" type="number" />
+
+        <label>Y (mm)</label>
+        <input id="prop-y" type="number" />
+
+        <hr />
+
+        <!-- ===== Fuente ===== -->
+        <h3>Fuente</h3>
+
+        <label>Familia</label>
+        <select id="font-family">
+          <option value="Arial">Arial</option>
+          <option value="Helvetica">Helvetica</option>
+          <option value="Times New Roman">Times New Roman</option>
+          <option value="Courier New">Courier New</option>
+        </select>
+
+        <label>Tamaño (pt)</label>
+        <input id="font-size" type="number" min="4" max="72" />
+
+        <div class="font-flags">
+          <label><input type="checkbox" id="font-bold" /> Bold</label>
+          <label><input type="checkbox" id="font-italic" /> Italic</label>
+          <label><input type="checkbox" id="font-underline" /> Underline</label>
+        </div>
+
+        <label>Alineación</label>
+        <select id="font-align">
+          <option value="left">Izquierda</option>
+          <option value="center">Centro</option>
+          <option value="right">Derecha</option>
+          <option value="justify">Justificado</option>
+        </select>
+
+        <p class="hint">
+          Click / Shift+Click<br />
+          Arrastrar / Flechas<br />
+          Doble click: editar texto<br />
+          Click derecho / Delete
+        </p>
+      </aside>
+    </div>
+
+    <!-- ===================== SCRIPTS ===================== -->
+    <script src="variables.js"></script>
+    <script src="editor.js"></script>
+  </body>
+</html>
